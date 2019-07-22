@@ -58,11 +58,12 @@ export default {
         })
 
         //comments
-        let comments = database.collection('Comments').where('to', '==', this.$route.params.id).orderBy('timestamp')
-        comments.onSnapshot((snapshot) =>{
+            
+            database.collection('Comments').where('to', '==', this.$route.params.id)
+            .onSnapshot(snapshot =>{
             snapshot.docChanges().forEach(change =>{
                 if(change.type == 'added'){
-                    this.comments.unshift({
+                    this.comments.push({
                         from: change.doc.data().from,
                         content: change.doc.data().content,
                         timestamp: moment(change.doc.data().timestamp).format('llll')
@@ -70,6 +71,7 @@ export default {
                 }
             })
         })
+        
     },
     methods:{
         addComment(){
